@@ -53,18 +53,19 @@ class Tree {
             previousNode = currentNode;
             if (value > currentNode.data) {
                 currentNode = currentNode.right;
-                if (!currentNode) { // In case of the previous node not being a leaf node
-                    previousNode.right = new Node(value);
-                    return;
-                }
             } else {
                 currentNode = currentNode.left;
-                if (!currentNode) {
+            }
+            if (!currentNode) { // In case of previous node not being a leaf
+                if (previousNode.data < value) {
+                    previousNode.right = new Node(value); // Make a new leaf node
+                } else {
                     previousNode.left = new Node(value);
-                    return;
                 }
+                return;
             }
         }
+        // if this part is reached, it means currentNode is a leaf node
         if (value > currentNode.data) { currentNode.right = new Node(value) }
         else { currentNode.left = new Node(value) }
     }
@@ -108,7 +109,7 @@ console.log('the sussy')
 tree.insert(70)
 tree.insert(71) // Tree becomes unbalanced starting from this one!!! Height difference more than 1
 tree.insert(72)
-// Figure out how to insert new nodes without fucking up the tree balance
-// Man I thought this was easy...
+tree.insert(2)
+tree.insert(-1)
 console.log(prettyPrint(tree.root))
 
