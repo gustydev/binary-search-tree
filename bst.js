@@ -30,7 +30,7 @@ class Tree {
     }
     find(value) {
         let currentNode = this.root;
-        while (currentNode.left !== null || currentNode.right !== null) {
+        while (currentNode.left !== null && currentNode.right !== null) {
             if (value > currentNode.data) {
                 currentNode = currentNode.right;
             } else {
@@ -65,4 +65,4 @@ const testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const tree = new Tree(testArr);
 console.log(tree)
 console.log(prettyPrint(tree.root))
-console.log(tree.find(324))
+console.log(tree.find(6345))
