@@ -1,8 +1,8 @@
 class Node {
-    constructor(data, left, right) {
+    constructor(data) {
         this.data = data;
-        this.left = left;
-        this.right = right;
+        this.left = null;
+        this.right = null;
     }
 }
 
@@ -20,19 +20,32 @@ class Tree {
         if (start > end) {
             return null; // Base case
         }
-        
-        const mid = (start + end) / 2;
-        const root = new Node(arr[mid]);
+        const mid = Math.round((start + end) / 2);
+        const node = new Node(arr[mid]);
 
-        root.left = this.buildTree(arr, start, mid - 1);
-        root.right = this.buildTree(arr, mid + 1, end);
+        node.left = this.buildTree(arr, start, mid - 1);
+        node.right = this.buildTree(arr, mid + 1, end);
 
-        return root;
+        return node;
     }
 }
 
-// [0, 1, 2, 3, 4]
-// root = 2, left [0, 1], right [3, 4]
-const testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]; // After sorting and getting rid of dupes, length 11. End = index 10
+const prettyPrint = (node, prefix = "", isLeft = true) => {
+    if (node === null) {
+      return;
+    }
+    if (node.right !== null) {
+      prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+    }
+    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+    if (node.left !== null) {
+      prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+    }
+  };
+
+const testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]; 
+// After sorting and getting rid of dupes, length 11. End = index 10
+// [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
+
 const tree = new Tree(testArr);
-console.log(tree)
+console.log(prettyPrint(tree.root))
