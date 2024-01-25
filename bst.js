@@ -43,6 +43,22 @@ class Tree {
             return null;
         }
     }
+    insert(value) {
+        if (this.find(value)) {
+            throw new Error('Value is already in the tree')
+        }
+        let currentNode = this.root;
+        while (!(currentNode.left === null && currentNode.right === null)) {
+            if (value > currentNode.data) {
+                currentNode = currentNode.right;
+            } else {
+                currentNode = currentNode.left;
+            }
+        }
+        console.log(currentNode.data)
+        if (value > currentNode.data) { currentNode.right = new Node(value) }
+        else { currentNode.left = new Node(value) }
+    }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -65,4 +81,9 @@ const testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const tree = new Tree(testArr);
 console.log(tree)
 console.log(prettyPrint(tree.root))
-console.log(tree.find(6345))
+
+console.log(tree.insert(69)) // nice
+console.log(prettyPrint(tree.root))
+
+console.log(tree.insert(6))
+console.log(prettyPrint(tree.root))
