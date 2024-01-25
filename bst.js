@@ -48,16 +48,31 @@ class Tree {
             throw new Error('Value is already in the tree')
         }
         let currentNode = this.root;
+        let previousNode;
         while (!(currentNode.left === null && currentNode.right === null)) {
+            previousNode = currentNode;
             if (value > currentNode.data) {
                 currentNode = currentNode.right;
+                if (!currentNode) { // In case of the previous node not being a leaf node
+                    previousNode.right = new Node(value);
+                    return;
+                }
             } else {
                 currentNode = currentNode.left;
+                if (!currentNode) {
+                    previousNode.left = new Node(value);
+                    return;
+                }
             }
         }
-        console.log(currentNode.data)
         if (value > currentNode.data) { currentNode.right = new Node(value) }
         else { currentNode.left = new Node(value) }
+    }
+    delete(value) {
+        if (!this.find(value)) {
+            throw new Error('Value is not in the tree');
+        }
+
     }
 }
 
@@ -79,11 +94,21 @@ const testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 // [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
 
 const tree = new Tree(testArr);
-console.log(tree)
+// console.log(tree)
+// console.log(prettyPrint(tree.root))
+
+tree.insert(69)// nice
+// console.log(prettyPrint(tree.root))
+
+tree.insert(6)
+tree.insert(68)
+
+console.log(prettyPrint(tree.root))
+console.log('the sussy')
+tree.insert(70)
+tree.insert(71) // Tree becomes unbalanced starting from this one!!! Height difference more than 1
+tree.insert(72)
+// Figure out how to insert new nodes without fucking up the tree balance
+// Man I thought this was easy...
 console.log(prettyPrint(tree.root))
 
-console.log(tree.insert(69)) // nice
-console.log(prettyPrint(tree.root))
-
-console.log(tree.insert(6))
-console.log(prettyPrint(tree.root))
