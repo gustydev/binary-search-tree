@@ -90,7 +90,6 @@ class Tree {
                 currentNode = currentNode.left;
             }
         }
-        console.log(previousNode.data, currentNode.data)
         if (this.isLeaf(currentNode)) {
             // Case 1: node to be removed is a leaf
             if (currentNode.data > previousNode.data) {
@@ -100,10 +99,17 @@ class Tree {
             }
         } else if (Boolean(currentNode.left) !== Boolean(currentNode.right)) {
             // Case 2: node has one child
-            previousNode.data = currentNode.data;
-            previousNode.left = currentNode.left;
-            previousNode.right = currentNode.right;
+            let replacerNode;
+            if (currentNode.left !== null) { replacerNode = currentNode.left }
+            else { replacerNode = currentNode.right }
+            if (replacerNode.data < previousNode.data) {
+                previousNode.left = replacerNode;
+            } else {
+                previousNode.right = replacerNode;
+            }
         } else {
+            // Case 3: node has two children
+            console.log('beep')
             return
         }
     }
@@ -141,7 +147,10 @@ tree.insert(72)
 tree.insert(2)
 tree.insert(-1)
 
+console.log(prettyPrint(tree.root))
 tree.delete(72)
 console.log(prettyPrint(tree.root))
 tree.delete(3)
+console.log(prettyPrint(tree.root))
+tree.delete(324)
 console.log(prettyPrint(tree.root))
