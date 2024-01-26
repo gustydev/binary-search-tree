@@ -28,9 +28,16 @@ class Tree {
 
         return node;
     }
+    isLeaf(node) {
+        if (node.left === null && node.right === null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     find(value) {
         let currentNode = this.root;
-        while ((currentNode) && !(currentNode.left === null && currentNode.right === null)) {
+        while ((currentNode) && !(this.isLeaf(currentNode))) {
             // While there is a node to speak of AND it's not a leaf (left and right children aren't null)
             if (value > currentNode.data) {
                 currentNode = currentNode.right;
@@ -39,11 +46,14 @@ class Tree {
             }
         }
         if (!currentNode) {
+            // Not leaf, value not found
             return null;
         }
         if (currentNode.data === value) {
+            // Leaf, value found
             return currentNode;
         } else {
+            // Leaf, value not found
             return null;
         }
     }
@@ -53,7 +63,7 @@ class Tree {
         }
         let currentNode = this.root;
         let previousNode;
-        while ((currentNode) && !(currentNode.left === null && currentNode.right === null)) {
+        while ((currentNode) && !(this.isLeaf(currentNode))) {
             previousNode = currentNode;
             if (value > currentNode.data) {
                 currentNode = currentNode.right;
@@ -67,7 +77,9 @@ class Tree {
             } else {
                 previousNode.left = new Node(value);
             }
+            return;
         }
+        // if this part is reached, it means currentNode is a leaf
         if (value > currentNode.data) { currentNode.right = new Node(value) }
         else { currentNode.left = new Node(value) }
     }
@@ -75,7 +87,17 @@ class Tree {
         if (!this.find(value)) {
             throw new Error('Value is not in the tree');
         }
-        
+        let currentNode = this.root;
+        let previousNode;
+        while ((currentNode) && !(currentNode.left === null && currentNode.right === null)) {
+            previousNode = currentNode;
+            if (value > currentNode.data) {
+                currentNode = currentNode.right;
+            } else {
+                currentNode = currentNode.left;
+            }
+        }
+
     }
 }
 
@@ -105,8 +127,6 @@ tree.insert(69)// nice
 
 tree.insert(6)
 tree.insert(68)
-
-console.log(prettyPrint(tree.root))
 tree.insert(70)
 tree.insert(71) // Tree becomes unbalanced starting from this one!!! Height difference more than 1
 tree.insert(72)
@@ -114,5 +134,4 @@ tree.insert(2)
 tree.insert(-1)
 
 console.log(prettyPrint(tree.root))
-console.log(tree.find(72))
 
