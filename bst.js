@@ -37,23 +37,19 @@ class Tree {
     }
     find(value) {
         let currentNode = this.root;
-        while ((currentNode) && !(this.isLeaf(currentNode))) {
-            // While there is a node to speak of AND it's not a leaf (left and right children aren't null)
-            if (value > currentNode.data) {
-                currentNode = currentNode.right;
-            } else if (value < currentNode.data) {
-                currentNode = currentNode.left;
+        while ((currentNode)) {
+            if (value === currentNode.data) {
+                return currentNode;
+            } else {
+                if (value > currentNode.data) {
+                    currentNode = currentNode.right;
+                } else if (value < currentNode.data) {
+                    currentNode = currentNode.left;
+                }
             }
         }
         if (!currentNode) {
-            // Not leaf, value not found
-            return null;
-        }
-        if (currentNode.data === value) {
-            // Leaf, value found
-            return currentNode;
-        } else {
-            // Leaf, value not found
+            // value not found
             return null;
         }
     }
@@ -63,7 +59,7 @@ class Tree {
         }
         let currentNode = this.root;
         let previousNode;
-        while ((currentNode) && !(this.isLeaf(currentNode))) {
+        while ((currentNode)) {
             previousNode = currentNode;
             if (value > currentNode.data) {
                 currentNode = currentNode.right;
@@ -79,9 +75,6 @@ class Tree {
             }
             return;
         }
-        // if this part is reached, it means currentNode is a leaf
-        if (value > currentNode.data) { currentNode.right = new Node(value) }
-        else { currentNode.left = new Node(value) }
     }
     delete(value) {
         if (!this.find(value)) {
@@ -89,7 +82,7 @@ class Tree {
         }
         let currentNode = this.root;
         let previousNode;
-        while ((currentNode) && !(currentNode.left === null && currentNode.right === null)) {
+        while (currentNode.data !== value) {
             previousNode = currentNode;
             if (value > currentNode.data) {
                 currentNode = currentNode.right;
@@ -97,7 +90,22 @@ class Tree {
                 currentNode = currentNode.left;
             }
         }
-
+        console.log(previousNode.data, currentNode.data)
+        if (this.isLeaf(currentNode)) {
+            // Case 1: node to be removed is a leaf
+            if (currentNode.data > previousNode.data) {
+                previousNode.right = null;
+            } else {
+                previousNode.left = null;
+            }
+        } else if (Boolean(currentNode.left) !== Boolean(currentNode.right)) {
+            // Case 2: node has one child
+            previousNode.data = currentNode.data;
+            previousNode.left = currentNode.left;
+            previousNode.right = currentNode.right;
+        } else {
+            return
+        }
     }
 }
 
@@ -133,5 +141,7 @@ tree.insert(72)
 tree.insert(2)
 tree.insert(-1)
 
+tree.delete(72)
 console.log(prettyPrint(tree.root))
-
+tree.delete(3)
+console.log(prettyPrint(tree.root))
