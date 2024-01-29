@@ -28,6 +28,15 @@ class Tree {
 
         return node;
     }
+    values(currentNode = this.root, valuesArr = []) {
+        if (currentNode === null) {
+            return;
+        }
+        valuesArr.push(currentNode.data);
+        this.values(currentNode.left, valuesArr);
+        this.values(currentNode.right, valuesArr);
+        return valuesArr;
+    }
     find(value) {
         let currentNode = this.root;
         while ((currentNode)) {
@@ -102,7 +111,6 @@ class Tree {
             }
         } else if (currentNode.left && currentNode.right) {
             // Case 3: node has two children
-            
         }
     }
 }
@@ -142,5 +150,7 @@ tree.insert(-1)
 console.log(prettyPrint(tree.root))
 tree.delete(72)
 tree.delete(3)
-tree.delete(8)
+tree.delete(4)
+console.log(tree.values())
+
 console.log(prettyPrint(tree.root))
