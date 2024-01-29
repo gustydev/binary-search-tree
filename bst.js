@@ -26,26 +26,31 @@ class Tree {
         node.right = this.buildTree(arr, mid + 1, end);
         return node;
     }
-    values(currentNode = this.root, valuesArr = []) {
+    preOrder(callback, currentNode = this.root, valuesArr = []) {
         if (currentNode === null) {
             return;
         }
-        valuesArr.push(currentNode.data);
-        this.values(currentNode.left, valuesArr);
-        this.values(currentNode.right, valuesArr);
+        if (callback) {
+            callback(currentNode)
+            this.preOrder(callback, currentNode.left);
+            this.preOrder(callback, currentNode.right);
+        } else {
+            valuesArr.push(currentNode.data);
+            this.preOrder(null, currentNode.left, valuesArr);
+            this.preOrder(null, currentNode.right, valuesArr)
+        }
         return valuesArr;
     }
     levelOrder(callback, currentNode = this.root) {
         if (currentNode === null) {
             return;
         }
-        console.log(Boolean(callback))
         const queue = [];
         const valueArr = [];
         queue.push(currentNode);
         while (queue.length > 0) {
             let front = queue.shift();
-            if (Boolean(callback)) {
+            if (callback) {
                 callback(front)
             } else {
                 valueArr.push(front.data)
@@ -129,7 +134,7 @@ class Tree {
             }
         } else if (currentNode.left && currentNode.right) {
             // Case 3: node has two children
-            const valueArray = sortArray(this.values());
+            const valueArray = sortArray(this.preOrder());
             let succValue = valueArray.find((n) => n > currentNode.data);
             let succNode = this.root;
             while (succNode.data !== succValue) {
@@ -177,14 +182,10 @@ tree.insert(72)
 tree.insert(2)
 tree.insert(-1)
 
-console.log(prettyPrint(tree.root))
-tree.delete(72)
 tree.delete(3)
 tree.delete(8)
 tree.delete(69)
 tree.delete(4)
-
-console.log(prettyPrint(tree.root))
 
 function plusOne(node) {
     node.data = node.data + 1;
@@ -193,4 +194,9 @@ function plusOne(node) {
 
 console.log(tree.levelOrder())
 tree.levelOrder(plusOne)
+tree.preOrder(plusOne)
+
+console.log(prettyPrint(tree.root))
+
 console.log(tree.levelOrder())
+console.log(tree.preOrder())
