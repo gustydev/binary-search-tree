@@ -233,51 +233,31 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     }
 };
 
-const testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]; 
-// After sorting and getting rid of dupes, length 11. End = index 10
-// [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
-
-const tree = new Tree(testArr);
-// console.log(tree)
-// console.log(prettyPrint(tree.root))
-
-tree.insert(69)// nice
-// console.log(prettyPrint(tree.root))
-
-tree.insert(6)
-tree.insert(68)
-tree.insert(70)
-tree.insert(71) // Tree becomes unbalanced starting from this one!!! Height difference more than 1
-tree.insert(72)
-tree.insert(2)
-tree.insert(-1)
-
-tree.delete(3)
-tree.delete(8)
-tree.delete(69)
-tree.delete(4)
-
-function plusOne(node) {
-    node.data = node.data + 1;
-    return node;
+function randomArray() {
+    let arr = [];
+    for (let i = 0; i < 100; i++) {
+        const random = Math.round(Math.random() * 100);
+        if (!arr.includes(random)) {
+            arr.push(random)
+        }
+    }
+    return arr;
 }
 
-// console.log(tree.levelOrder())
+const test = new Tree(randomArray());
+console.log(test.isBalanced())
 
-tree.levelOrder(plusOne)
-tree.preOrder(plusOne);
-tree.inOrder(plusOne);
-tree.postOrder(plusOne);
+console.log(test.levelOrder());
 
-// console.log(tree.levelOrder())
-// console.log(tree.preOrder())
-// console.log(tree.inOrder())
-// console.log(tree.postOrder())
+for (let i = 0; i < 100; i++) {
+    let random = Math.round(Math.random() * 1000)
+    if (!test.find(random)) {
+        test.insert(random)
+    }
+}
 
-console.log(prettyPrint(tree.root))
-console.log(tree.isBalanced())
-
-tree.rebalance();
-
-console.log(prettyPrint(tree.root))
-console.log(tree.isBalanced())
+console.log(test.levelOrder());
+console.log(test.isBalanced())
+test.rebalance();
+console.log(test.isBalanced());
+console.log(test.levelOrder())
