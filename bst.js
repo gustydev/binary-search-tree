@@ -210,9 +210,13 @@ class Tree {
     isBalanced() {
         const root = this.root;
         if ( Math.abs( this.height(root.left) - this.height(root.right) ) <= 1 ) {
-            return true
+            return true;
         }
         return false;
+    }
+    rebalance() {
+        const arr = this.inOrder();
+        this.root = this.buildTree(sortArray(arr));
     }
 }
 
@@ -271,6 +275,9 @@ tree.postOrder(plusOne);
 // console.log(tree.postOrder())
 
 console.log(prettyPrint(tree.root))
-console.log(tree.height(tree.find(13)))
-// console.log(tree.height(tree.find(9)))
+console.log(tree.isBalanced())
+
+tree.rebalance();
+
+console.log(prettyPrint(tree.root))
 console.log(tree.isBalanced())
