@@ -31,6 +31,7 @@ class Tree {
             return;
         }
         if (callback) {
+            callback(currentNode)
             this.preOrder(callback, currentNode.left);
             this.preOrder(callback, currentNode.right);
         } else {
@@ -193,6 +194,7 @@ function plusOne(node) {
 
 console.log(tree.levelOrder())
 tree.levelOrder(plusOne)
+tree.preOrder(plusOne)
 
 console.log(prettyPrint(tree.root))
 
