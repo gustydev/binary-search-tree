@@ -111,6 +111,18 @@ class Tree {
             }
         } else if (currentNode.left && currentNode.right) {
             // Case 3: node has two children
+            const valueArray = sortArray(this.values());
+            let succValue = valueArray.find((n) => n > currentNode.data);
+            let succNode = this.root;
+            while (succNode.data !== succValue) {
+                if (succValue > succNode.data) {
+                    succNode = succNode.right;
+                } else {
+                    succNode = succNode.left;
+                }
+            }
+            this.delete(succNode.data);
+            currentNode.data = succNode.data;
         }
     }
 }
@@ -150,7 +162,6 @@ tree.insert(-1)
 console.log(prettyPrint(tree.root))
 tree.delete(72)
 tree.delete(3)
-tree.delete(4)
-console.log(tree.values())
+tree.delete(8)
 
 console.log(prettyPrint(tree.root))
