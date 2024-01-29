@@ -60,6 +60,36 @@ class Tree {
         }
         return valueArr;
     }
+    inOrder(callback, currentNode = this.root, valuesArr = []) {
+        if (currentNode === null) {
+            return;
+        }
+        if (callback) {
+            this.inOrder(callback, currentNode.left);
+            callback(currentNode)
+            this.inOrder(callback, currentNode.right);
+        } else {
+            this.inOrder(null, currentNode.left, valuesArr);
+            valuesArr.push(currentNode.data);
+            this.inOrder(null, currentNode.right, valuesArr)
+        }
+        return valuesArr;
+    }
+    postOrder(callback, currentNode = this.root, valuesArr = []) {
+        if (currentNode === null) {
+            return;
+        }
+        if (callback) {
+            this.postOrder(callback, currentNode.left);
+            this.postOrder(callback, currentNode.right);
+            callback(currentNode)
+        } else {
+            this.postOrder(null, currentNode.left, valuesArr);
+            this.postOrder(null, currentNode.right, valuesArr)
+            valuesArr.push(currentNode.data);
+        }
+        return valuesArr;
+    }
     find(value) {
         let currentNode = this.root;
         while ((currentNode)) {
@@ -194,9 +224,13 @@ function plusOne(node) {
 
 console.log(tree.levelOrder())
 tree.levelOrder(plusOne)
-tree.preOrder(plusOne)
-
-console.log(prettyPrint(tree.root))
+tree.preOrder(plusOne);
+tree.inOrder(plusOne);
+tree.postOrder(plusOne);
 
 console.log(tree.levelOrder())
 console.log(tree.preOrder())
+console.log(tree.inOrder())
+console.log(tree.postOrder())
+
+console.log(prettyPrint(tree.root))
