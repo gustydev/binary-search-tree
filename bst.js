@@ -179,9 +179,14 @@ class Tree {
         }
     }
     depth(node) {
+        if (!(this.find(node.data))) {
+            throw new Error('Node not found')
+        }
         let edges = 1;
         let current = this.root;
+        console.log(current.data, node.data)
         while (current.data !== node.data) {
+            
             if (node.data > current.data) {
                 current = current.right;
             } else {
@@ -191,7 +196,9 @@ class Tree {
         }
         return edges;
     }
-
+    height(node) {
+        
+    }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -249,4 +256,5 @@ tree.postOrder(plusOne);
 // console.log(tree.postOrder())
 
 console.log(prettyPrint(tree.root))
-console.log(tree.depth(tree.find(76)))
+console.log(tree.find(13))
+console.log(tree.depth(tree.find(13)))
