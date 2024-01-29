@@ -199,10 +199,20 @@ class Tree {
             throw new Error('Node not found')
         }
         const depths = new Set();
-        this.levelOrder((front) => {
-            depths.add(this.depth(front))
+        // Traverse tree using node as starting point
+        this.levelOrder((current) => {
+            depths.add(this.depth(current)) 
+            // Calculate all depths of all nodes until an end (leaf node) is reached
         }, node)
+        // Return the maximum depth calculated (longest path from node to a leaf)
         return depths.size
+    }
+    isBalanced() {
+        const root = this.root;
+        if ( Math.abs( this.height(root.left) - this.height(root.right) ) <= 1 ) {
+            return true
+        }
+        return false;
     }
 }
 
@@ -261,5 +271,6 @@ tree.postOrder(plusOne);
 // console.log(tree.postOrder())
 
 console.log(prettyPrint(tree.root))
-console.log(tree.height(tree.find(71)))
-console.log(tree.height(tree.find(9)))
+console.log(tree.height(tree.find(13)))
+// console.log(tree.height(tree.find(9)))
+console.log(tree.isBalanced())
