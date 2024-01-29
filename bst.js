@@ -178,6 +178,19 @@ class Tree {
             currentNode.data = succNode.data;
         }
     }
+    depth(node) {
+        let edges = 1;
+        let current = this.root;
+        while (current.data !== node.data) {
+            if (node.data > current.data) {
+                current = current.right;
+            } else {
+                current = current.left
+            }
+            edges += 1;
+        }
+        return edges;
+    }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -222,15 +235,17 @@ function plusOne(node) {
     return node;
 }
 
-console.log(tree.levelOrder())
+// console.log(tree.levelOrder())
+
 tree.levelOrder(plusOne)
 tree.preOrder(plusOne);
 tree.inOrder(plusOne);
 tree.postOrder(plusOne);
 
-console.log(tree.levelOrder())
-console.log(tree.preOrder())
-console.log(tree.inOrder())
-console.log(tree.postOrder())
+// console.log(tree.levelOrder())
+// console.log(tree.preOrder())
+// console.log(tree.inOrder())
+// console.log(tree.postOrder())
 
 console.log(prettyPrint(tree.root))
+console.log(tree.depth(tree.find(76)))
