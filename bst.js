@@ -22,10 +22,8 @@ class Tree {
         }
         const mid = Math.round((start + end) / 2);
         const node = new Node(arr[mid]);
-
         node.left = this.buildTree(arr, start, mid - 1);
         node.right = this.buildTree(arr, mid + 1, end);
-
         return node;
     }
     values(currentNode = this.root, valuesArr = []) {
@@ -36,6 +34,26 @@ class Tree {
         this.values(currentNode.left, valuesArr);
         this.values(currentNode.right, valuesArr);
         return valuesArr;
+    }
+    levelOrder(callback, currentNode = this.root) {
+        if (currentNode === null) {
+            return;
+        }
+        console.log(Boolean(callback))
+        const queue = [];
+        const valueArr = [];
+        queue.push(currentNode);
+        while (queue.length > 0) {
+            let front = queue.shift();
+            if (Boolean(callback)) {
+                callback(front)
+            } else {
+                valueArr.push(front.data)
+            }
+            if (front.left !== null) { queue.push(front.left) }
+            if (front.right !== null) { queue.push(front.right) }
+        }
+        return valueArr;
     }
     find(value) {
         let currentNode = this.root;
@@ -163,5 +181,16 @@ console.log(prettyPrint(tree.root))
 tree.delete(72)
 tree.delete(3)
 tree.delete(8)
+tree.delete(69)
+tree.delete(4)
 
 console.log(prettyPrint(tree.root))
+
+function plusOne(node) {
+    node.data = node.data + 1;
+    return node;
+}
+
+console.log(tree.levelOrder())
+tree.levelOrder(plusOne)
+console.log(tree.levelOrder())
