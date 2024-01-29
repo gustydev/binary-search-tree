@@ -26,84 +26,84 @@ class Tree {
         node.right = this.buildTree(arr, mid + 1, end);
         return node;
     }
-    preOrder(callback, currentNode = this.root, valuesArr = []) {
-        if (currentNode === null) {
+    preOrder(callback, current = this.root, values = []) {
+        if (current === null) {
             return;
         }
         if (callback) {
-            callback(currentNode)
-            this.preOrder(callback, currentNode.left);
-            this.preOrder(callback, currentNode.right);
+            callback(current)
+            this.preOrder(callback, current.left);
+            this.preOrder(callback, current.right);
         } else {
-            valuesArr.push(currentNode.data);
-            this.preOrder(null, currentNode.left, valuesArr);
-            this.preOrder(null, currentNode.right, valuesArr)
+            values.push(current.data);
+            this.preOrder(null, current.left, values);
+            this.preOrder(null, current.right, values)
         }
-        return valuesArr;
+        return values;
     }
-    levelOrder(callback, currentNode = this.root) {
-        if (currentNode === null) {
+    levelOrder(callback, current = this.root) {
+        if (current === null) {
             return;
         }
         const queue = [];
-        const valueArr = [];
-        queue.push(currentNode);
+        const values = [];
+        queue.push(current);
         while (queue.length > 0) {
             let front = queue.shift();
             if (callback) {
                 callback(front)
             } else {
-                valueArr.push(front.data)
+                values.push(front.data)
             }
             if (front.left !== null) { queue.push(front.left) }
             if (front.right !== null) { queue.push(front.right) }
         }
-        return valueArr;
+        return values;
     }
-    inOrder(callback, currentNode = this.root, valuesArr = []) {
-        if (currentNode === null) {
+    inOrder(callback, current = this.root, values = []) {
+        if (current === null) {
             return;
         }
         if (callback) {
-            this.inOrder(callback, currentNode.left);
-            callback(currentNode)
-            this.inOrder(callback, currentNode.right);
+            this.inOrder(callback, current.left);
+            callback(current)
+            this.inOrder(callback, current.right);
         } else {
-            this.inOrder(null, currentNode.left, valuesArr);
-            valuesArr.push(currentNode.data);
-            this.inOrder(null, currentNode.right, valuesArr)
+            this.inOrder(null, current.left, values);
+            values.push(current.data);
+            this.inOrder(null, current.right, values)
         }
-        return valuesArr;
+        return values;
     }
-    postOrder(callback, currentNode = this.root, valuesArr = []) {
-        if (currentNode === null) {
+    postOrder(callback, current = this.root, values = []) {
+        if (current === null) {
             return;
         }
         if (callback) {
-            this.postOrder(callback, currentNode.left);
-            this.postOrder(callback, currentNode.right);
-            callback(currentNode)
+            this.postOrder(callback, current.left);
+            this.postOrder(callback, current.right);
+            callback(current)
         } else {
-            this.postOrder(null, currentNode.left, valuesArr);
-            this.postOrder(null, currentNode.right, valuesArr)
-            valuesArr.push(currentNode.data);
+            this.postOrder(null, current.left, values);
+            this.postOrder(null, current.right, values)
+            values.push(current.data);
         }
-        return valuesArr;
+        return values;
     }
     find(value) {
-        let currentNode = this.root;
-        while ((currentNode)) {
-            if (value === currentNode.data) {
-                return currentNode;
+        let current = this.root;
+        while ((current)) {
+            if (value === current.data) {
+                return current;
             } else {
-                if (value > currentNode.data) {
-                    currentNode = currentNode.right;
-                } else if (value < currentNode.data) {
-                    currentNode = currentNode.left;
+                if (value > current.data) {
+                    current = current.right;
+                } else if (value < current.data) {
+                    current = current.left;
                 }
             }
         }
-        if (!currentNode) {
+        if (!current) {
             // value not found
             return null;
         }
@@ -112,21 +112,21 @@ class Tree {
         if (this.find(value)) {
             throw new Error('Value is already in the tree')
         }
-        let currentNode = this.root;
-        let previousNode;
-        while ((currentNode)) {
-            previousNode = currentNode;
-            if (value > currentNode.data) {
-                currentNode = currentNode.right;
+        let current = this.root;
+        let previous;
+        while ((current)) {
+            previous = current;
+            if (value > current.data) {
+                current = current.right;
             } else {
-                currentNode = currentNode.left;
+                current = current.left;
             }
         }
-        if (!currentNode) {
-            if (previousNode.data < value) {
-                previousNode.right = new Node(value);
+        if (!current) {
+            if (previous.data < value) {
+                previous.right = new Node(value);
             } else {
-                previousNode.left = new Node(value);
+                previous.left = new Node(value);
             }
             return;
         }
@@ -135,37 +135,37 @@ class Tree {
         if (!this.find(value)) {
             throw new Error('Value is not in the tree');
         }
-        let currentNode = this.root;
-        let previousNode;
-        while (currentNode.data !== value) {
-            previousNode = currentNode;
-            if (value > currentNode.data) {
-                currentNode = currentNode.right;
+        let current = this.root;
+        let previous;
+        while (current.data !== value) {
+            previous = current;
+            if (value > current.data) {
+                current = current.right;
             } else {
-                currentNode = currentNode.left;
+                current = current.left;
             }
         }
-        if (currentNode.left === null && currentNode.right === null) {
+        if (current.left === null && current.right === null) {
             // Case 1: node is a leaf
-            if (currentNode.data > previousNode.data) {
-                previousNode.right = null;
+            if (current.data > previous.data) {
+                previous.right = null;
             } else {
-                previousNode.left = null;
+                previous.left = null;
             }
-        } else if (Boolean(currentNode.left) !== Boolean(currentNode.right)) {
+        } else if (Boolean(current.left) !== Boolean(current.right)) {
             // Case 2: node has one child
-            let replacerNode;
-            if (currentNode.left !== null) { replacerNode = currentNode.left }
-            else { replacerNode = currentNode.right }
-            if (replacerNode.data < previousNode.data) {
-                previousNode.left = replacerNode;
+            let replacer;
+            if (current.left !== null) { replacer = current.left }
+            else { replacer = current.right }
+            if (replacer.data < previous.data) {
+                previous.left = replacer;
             } else {
-                previousNode.right = replacerNode;
+                previous.right = replacer;
             }
-        } else if (currentNode.left && currentNode.right) {
+        } else if (current.left && current.right) {
             // Case 3: node has two children
-            const valueArray = sortArray(this.preOrder());
-            let succValue = valueArray.find((n) => n > currentNode.data);
+            const values = sortArray(this.preOrder());
+            let succValue = values.find((n) => n > current.data);
             let succNode = this.root;
             while (succNode.data !== succValue) {
                 if (succValue > succNode.data) {
@@ -175,7 +175,7 @@ class Tree {
                 }
             }
             this.delete(succNode.data);
-            currentNode.data = succNode.data;
+            current.data = succNode.data;
         }
     }
     depth(node) {
@@ -191,6 +191,7 @@ class Tree {
         }
         return edges;
     }
+
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
