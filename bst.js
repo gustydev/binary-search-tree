@@ -219,3 +219,5 @@ class Tree {
         this.root = this.buildTree(sortArray(arr));
     }
 }
+
+export { Node, Tree, sortArray }
